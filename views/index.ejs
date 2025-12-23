@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobinime API - Anime Streaming</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎬 Mobinime API</h1>
+            <p>Simple Anime Streaming API Endpoint</p>
+        </header>
+
+        <main class="content">
+            <!-- Overview -->
+            <section class="section">
+                <h2>📚 Overview</h2>
+                <p>A fast and simple API to access anime data and streaming links from Mobinime. Built with Node.js, Express, and EJS.</p>
+                <div class="badge-group">
+                    <span class="badge">Node.js</span>
+                    <span class="badge">Express</span>
+                    <span class="badge">Fast Response</span>
+                    <a href="/test" style="display: inline-block;"><span class="badge" style="background: #28a745; cursor: pointer;">🧪 Test API</span></a>
+                </div>
+            </section>
+
+            <!-- API Endpoints -->
+            <section class="section">
+                <h2>🔌 API Endpoints</h2>
+                
+                <div class="endpoint">
+                    <h3>1. Homepage Data</h3>
+                    <code class="endpoint-url">GET /api/homepage</code>
+                    <p>Get featured anime from homepage</p>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl https://your-domain.com/api/homepage</code></pre>
+                        <pre><code>{
+  "success": true,
+  "data": { /* anime data */ }
+}</code></pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <h3>2. Genre List</h3>
+                    <code class="endpoint-url">GET /api/genres</code>
+                    <p>Get all available genres</p>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl https://your-domain.com/api/genres</code></pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <h3>3. Anime List</h3>
+                    <code class="endpoint-url">GET /api/anime/list</code>
+                    <p>Get anime list by type and optional genre</p>
+                    <table class="params-table">
+                        <thead>
+                            <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>type</td><td>string</td><td>series</td><td>series, movie, ova, live-action</td></tr>
+                            <tr><td>page</td><td>number</td><td>0</td><td>Page number</td></tr>
+                            <tr><td>count</td><td>number</td><td>15</td><td>Items per page</td></tr>
+                            <tr><td>genre</td><td>string</td><td></td><td>Genre filter (optional)</td></tr>
+                        </tbody>
+                    </table>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl "https://your-domain.com/api/anime/list?type=series&page=0&count=10&genre=action"</code></pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <h3>4. Search Anime</h3>
+                    <code class="endpoint-url">GET /api/anime/search</code>
+                    <p>Search anime by query</p>
+                    <table class="params-table">
+                        <thead>
+                            <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>q</td><td>string</td><td>Yes</td><td>Search query</td></tr>
+                            <tr><td>page</td><td>number</td><td>No</td><td>Page number (default: 0)</td></tr>
+                            <tr><td>count</td><td>number</td><td>No</td><td>Items per page (default: 25)</td></tr>
+                        </tbody>
+                    </table>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl "https://your-domain.com/api/anime/search?q=naruto&page=0&count=10"</code></pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <h3>5. Anime Detail</h3>
+                    <code class="endpoint-url">GET /api/anime/detail/:id</code>
+                    <p>Get detailed information about an anime</p>
+                    <table class="params-table">
+                        <thead>
+                            <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>id</td><td>number</td><td>Anime ID (in URL)</td></tr>
+                        </tbody>
+                    </table>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl https://your-domain.com/api/anime/detail/123</code></pre>
+                    </details>
+                </div>
+
+                <div class="endpoint">
+                    <h3>6. Stream URL</h3>
+                    <code class="endpoint-url">GET /api/anime/stream/:id/:epsid</code>
+                    <p>Get streaming URL for specific episode</p>
+                    <table class="params-table">
+                        <thead>
+                            <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>id</td><td>number</td><td>Anime ID (in URL)</td></tr>
+                            <tr><td>epsid</td><td>number</td><td>Episode ID (in URL)</td></tr>
+                            <tr><td>quality</td><td>string</td><td>Video quality (default: HD)</td></tr>
+                        </tbody>
+                    </table>
+                    <details>
+                        <summary>View Example</summary>
+                        <pre><code>curl "https://your-domain.com/api/anime/stream/123/456?quality=HD"</code></pre>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Usage Examples -->
+            <section class="section">
+                <h2>💡 Usage Examples</h2>
+                
+                <div class="example">
+                    <h3>JavaScript Fetch</h3>
+                    <pre><code>// Search anime
+fetch('https://your-domain.com/api/anime/search?q=attack-on-titan')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+// Get anime detail
+fetch('https://your-domain.com/api/anime/detail/123')
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+// Get stream URL
+fetch('https://your-domain.com/api/anime/stream/123/456?quality=HD')
+  .then(res => res.json())
+  .then(data => console.log(data.url));</code></pre>
+                </div>
+
+                <div class="example">
+                    <h3>cURL</h3>
+                    <pre><code># List series anime
+curl "https://your-domain.com/api/anime/list?type=series&count=5"
+
+# Search for anime
+curl "https://your-domain.com/api/anime/search?q=one-piece"
+
+# Get anime detail
+curl "https://your-domain.com/api/anime/detail/999"</code></pre>
+                </div>
+            </section>
+
+            <!-- Deployment -->
+            <section class="section">
+                <h2>🚀 Deploy to Vercel</h2>
+                <ol>
+                    <li>Push this project to GitHub</li>
+                    <li>Go to <a href="https://vercel.com" target="_blank">vercel.com</a></li>
+                    <li>Click "New Project" and import your repository</li>
+                    <li>Set Framework as "Other" (Node.js)</li>
+                    <li>Deploy and get your live URL</li>
+                </ol>
+                <div class="note">
+                    <strong>Note:</strong> The API relies on external anime data source. Ensure stable internet connection on your hosting.
+                </div>
+            </section>
+
+            <!-- Response Format -->
+            <section class="section">
+                <h2>📋 Response Format</h2>
+                <p>All responses follow this format:</p>
+                <pre><code>{
+  "success": true,
+  "data": { /* Response data */ }
+}
+
+// On error:
+{
+  "success": false,
+  "error": "Error message"
+}</code></pre>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ | Mobinime API v1.0 | Fast & Simple Anime Streaming</p>
+        </footer>
+    </div>
+</body>
+</html>
